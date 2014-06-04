@@ -31,7 +31,17 @@ public class DecryptionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// 数据解析成密文
+		// 密文压缩
+		// 密文分离
+		// 报文头密文解密
+		// 生成密钥
+		// 解密报文内容
+		// 返回解密后的报文内容
+		this.getServletConfig()
+			.getServletContext()
+			.getRequestDispatcher("/showInfo.jsp")
+			.forward(request, response);
 	}
 
 }
