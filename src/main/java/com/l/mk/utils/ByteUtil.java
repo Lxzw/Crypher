@@ -9,7 +9,10 @@ public class ByteUtil {
 	 * @return byte[]  返回一个字节数组对象
 	 */
 	public static byte[] merge(byte[] head, byte[] end) {
-		return null;
+		byte[] t = new byte[head.length+end.length];
+		System.arraycopy(head, 0, t, 0, head.length);
+		System.arraycopy(end, 0, t, head.length, end.length);
+		return t;
 	}
 	
 	/**
