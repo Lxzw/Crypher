@@ -65,6 +65,8 @@ public class EncryptionServlet extends HttpServlet {
 		byte[] cipher = ByteUtil.merge(header,content);
 		// 密文扩展
 		String s = ByteUtil.extend(cipher);
+
+	
 		//将密文发送给要显示的jsp
 		request.setAttribute("cipher", "xxx");
 		this.getServletConfig()
