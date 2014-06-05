@@ -40,7 +40,7 @@ public class EncryptionServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 解析成固定形式的报文
-/*		Message message = Parser.parse(request.getParameter("plaintext"));
+		Message message = Parser.parse(request.getParameter("plaintext"));
 		// 压缩报文
 		ZipMessage zipMessage = ZipMessage.generate(message);
 		// 根据报文头生成密钥
@@ -65,7 +65,6 @@ public class EncryptionServlet extends HttpServlet {
 		byte[] cipher = ByteUtil.merge(header,content);
 		// 密文扩展
 		String s = ByteUtil.extend(cipher);
-		*/
 		//将密文发送给要显示的jsp
 		request.setAttribute("cipher", "xxx");
 		this.getServletConfig()
