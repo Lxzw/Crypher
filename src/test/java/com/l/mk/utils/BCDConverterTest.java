@@ -13,16 +13,17 @@ public class BCDConverterTest {
 		
 		byte[] bcd = BCDConverter.toBCD(s);
 		for (int i=0; i < BCDConverter.toBCD(s).length; i++) {
+			System.out.println(bcd[i]);
 			System.out.printf("%04x\n",bcd[i]);
-			assertTrue(bcd[i] == 0x0099);
+			assertTrue(bcd[i] == -0x67);
 		}
-		
-		
 	}
 
 	@Test
 	public void testFromBCD() {
-		fail("Not yet implemented");
+		byte[] s = {0x11,-0x67};
+		System.out.println(BCDConverter.fromBCD(s));
+		assertTrue("1199".equals(BCDConverter.fromBCD(s)));
 	}
 
 }
