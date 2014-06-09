@@ -8,13 +8,13 @@
   	<servlet-name>EncryptionServlet</servlet-name>
   	<display-name>EncryptionServlet</display-name>
   	<description></description>
-  	<servlet-class>com.l.mk.servlet.EncryptionServlet</servlet-class>
+  	<servlet-class>com.l.mk.crypher.servlet.EncryptionServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>DecryptionServlet</servlet-name>
   	<display-name>DecryptionServlet</display-name>
   	<description></description>
-  	<servlet-class>com.l.mk.servlet.DecryptionServlet</servlet-class>
+  	<servlet-class>com.l.mk.crypher.servlet.DecryptionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>EncryptionServlet</servlet-name>
