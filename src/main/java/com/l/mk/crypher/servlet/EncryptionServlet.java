@@ -38,25 +38,18 @@ public class EncryptionServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//从表单中获得数据
-		String str = request.getParameter("xm");
-		System.out.println(str);
+		byte[] data  = request.getParameter("xm").getBytes("iso-8859-1");
 		//加密
-		byte[] data = str.getBytes("UTF-8");
-		//
-		for (int i=0; i < data.length; i++) {
-			System.out.printf("%x", data[i]);
-		}
 		byte[] cipher = null;
 		try {
 			byte[] key = DESedeEncryptionUtil.initKey("hello", "1322", "sdfs"); 
 			cipher = DESedeEncryptionUtil.encrypt(data, key);
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//输出为字符串
 		request.setAttribute("cipher", ByteUtil.extend(cipher));
+		
 		this.getServletConfig()
 			.getServletContext()
 			.getRequestDispatcher("/showCipher.jsp")

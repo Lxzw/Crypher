@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 
 import org.junit.Test;
 
+import com.l.mk.crypher.format.ByteUtil;
+
 public class ByteUtilTest {
 
 	@Test
@@ -30,9 +32,9 @@ public class ByteUtilTest {
 	}
 	
 	/**
-	 * ²âÊÔ½«×Ö·û´®±ä³É×Ö½ÚÊý×éÊ±µÄ²»Í¬Ð§¹û
+	 * ï¿½ï¿½ï¿½Ô½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä²ï¿½Í¬Ð§ï¿½ï¿½
 	 * 
-	 * Ã»ÓÐ¿´³ö²»Í¬µÄÐ§¹û£¿
+	 * Ã»ï¿½Ð¿ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½Ð§ï¿½ï¿½
 	 */
 	@Test
 	public void test() {
@@ -51,7 +53,7 @@ public class ByteUtilTest {
 		}
 		System.out.println(" " + Charset.defaultCharset().name());
 		
-		//»ñµÃÒ»¸ö×Ö½ÚÖÐÓÒËÄÎ»ºÍ×óËÄÎ»µÄÊ®½øÖÆµÄÖµ
+		//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ê®ï¿½ï¿½ï¿½Æµï¿½Öµ
 		byte a = 'a';
 		int left = a & 0x0f;
 		int right = a >> 4;

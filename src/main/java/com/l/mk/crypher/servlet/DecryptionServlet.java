@@ -48,15 +48,10 @@ public class DecryptionServlet extends HttpServlet {
 			//密钥
 			byte[] key = DESedeEncryptionUtil.initKey("hello", "1322", "sdfs"); 
 			data = DESedeEncryptionUtil.decrypt(cipher_data, key);
-			for (int i=0; i < data.length; i++) {
-				System.out.printf("%x", data[i]);
-			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(new String(data));
-		System.out.println(new String(data,"UTF-8"));
 		map.put("xm",new String(data,"UTF-8") );
 		request.setAttribute("plaintext", map);
 		this.getServletConfig()
