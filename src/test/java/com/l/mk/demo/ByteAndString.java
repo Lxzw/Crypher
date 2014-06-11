@@ -17,6 +17,10 @@ public class ByteAndString {
 		String s2 = new String(s.getBytes());
 		System.out.println(s2);
 		System.out.println(new String(s.getBytes("ISO8859-1")));
+		
+		int i = 16;
+		byte b = (byte)i;
+		System.out.printf("%x",b);
 	}
 
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.l.mk.crypher.format.BCDConverter;
+
 public class BCDConverterTest {
 
 	@Test
