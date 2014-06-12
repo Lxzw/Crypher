@@ -1,11 +1,14 @@
 package com.l.mk.crypher.servlet;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.catalina.connector.Request;
 
 import com.l.mk.crypher.cryption.DESedeEncryptionUtil;
 import com.l.mk.crypher.format.ByteUtil;
@@ -37,6 +40,8 @@ public class EncryptionServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		xmlProcess(request);
+		uploadfile(request);
 		//从表单中获得数据
 		byte[] data  = request.getParameter("xm").getBytes("iso-8859-1");
 		//加密
@@ -54,6 +59,25 @@ public class EncryptionServlet extends HttpServlet {
 			.getServletContext()
 			.getRequestDispatcher("/showCipher.jsp")
 			.forward(request, response);
+	}
+
+	private void xmlProcess(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		String xml =request.getParameter("xml");
+		System.out.println(xml);
+	}
+	
+	private void uploadfile(HttpServletRequest request) {
+		String contentType = request.getContentType();
+		System.out.println(contentType);
+		System.out.println(request.getParameter("file"));
+		try {
+			DataInputStream in = new DataInputStream(request.getInputStream());
+			System.out.println(request.getContentLength());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
