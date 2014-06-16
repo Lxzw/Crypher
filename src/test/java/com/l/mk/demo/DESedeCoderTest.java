@@ -8,43 +8,43 @@ import org.junit.Test;
 public class DESedeCoderTest {
 
 	/**
-	 * ²âÊÔ
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * @throws Exception
 	 */
 	@Test
 	public void test() throws Exception {
-		String inputStr = "DESede";
+		String inputStr = "DESededdddddddd";
 		byte[] inputData = inputStr.getBytes();
-		System.out.println("Ô­ÎÄ£º\t" + inputStr);
+		System.out.println("åŸæ–‡ï¼š\t" + inputStr);
 		
-		//³õÊ¼»¯ÃÜÔ¿
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ô¿
 		byte[] key = DESedeCoder.initKey();
-		System.out.println("ÃÜÔ¿£º\t" + Base64.encodeBase64String(key));
+		System.out.println("å¯†é’¥ï¼š\t" + Base64.encodeBase64String(key));
 		
-		//¼ÓÃÜ
+		//ï¿½ï¿½ï¿½ï¿½
 		inputData = DESedeCoder.encrypt(inputData, key);
-		System.out.println("¼ÓÃÜºó£º\t" + Base64.encodeBase64String(inputData));
+		System.out.println("å¯†æ–‡ï¼š\t" + Base64.encodeBase64String(inputData));
 		
-		//½âÃÜ
+		//ï¿½ï¿½ï¿½ï¿½
 		byte[] outputData = DESedeCoder.decrypt(inputData, key);
-		System.out.println("½âÃÜºó\t" + Base64.encodeBase64String(outputData));
+		System.out.println("è§£å¯†ï¼š\t" + Base64.encodeBase64String(outputData));
 		String outputStr = new String(outputData);
-		System.out.println("½âÃÜºó:\t" + outputStr);
+		System.out.println("ï¿½ï¿½ï¿½Üºï¿½:\t" + outputStr);
 		
-		//Ğ£Ñé
+		//Ğ£ï¿½ï¿½
 		assertTrue(inputStr.equals(outputStr));
 	}
 	
 	/**
-	 * ÑéÖ¤ÊÇ·ñ¿ÉÒÔÓÃ3¸ökeyÀ´¶ÔÃÜÎÄ½øĞĞ¼ÓÃÜ
+	 * ï¿½ï¿½Ö¤ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½keyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½
 	 * @throws Exception 
 	 */
 	@Test
 	public void test3key() throws Exception {
 		String inputStr = "DESede";
 		byte[] inputData = inputStr.getBytes();
-		//Êä³öÔ­ÎÄ
-		System.out.println("Ô­ÎÄ£º\t" + inputStr);
+		//ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
+		System.out.println("Ô­ï¿½Ä£ï¿½\t" + inputStr);
 		
 		byte[] key = {
 				0x00,0x0f,0x0e,0x11,0x12,0x13,0x14,0x15,
@@ -56,17 +56,17 @@ public class DESedeCoderTest {
 			    0x00,0x0f,0x0e,0x11,0x12,0x13,0x14,0x15,
 			    0x00,0x0f,0x0e,0x11,0x12,0x13,0x14,0x15
         };
-		System.out.println("ÃÜÔ¿£º\t" + Base64.encodeBase64String(key));
+		System.out.println("ï¿½ï¿½Ô¿ï¿½ï¿½\t" + Base64.encodeBase64String(key));
 		
 		inputData = DESedeCoder.encrypt(inputData, key);
-		System.out.println("¼ÓÃÜºó£º\t" + Base64.encodeBase64String(inputData));
+		System.out.println("ï¿½ï¿½ï¿½Üºï¿½\t" + Base64.encodeBase64String(inputData));
 		
-		//³õÊ¼»¯ÃÜÔ¿ 3¸öÃÜÔ¿
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ô¿ 3ï¿½ï¿½ï¿½ï¿½Ô¿
 //		byte[] key1 = DESedeCoder.initKey();
 //		byte[] key2 = DESedeCoder.initKey();
 //		byte[] key3 = DESedeCoder.initKey();
 //		
-//		//¼ÓÃÜ £¨key1£©+ ½âÃÜ £¨key2£©+¼ÓÃÜ£¨key3£©
+//		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½key1ï¿½ï¿½+ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½key2ï¿½ï¿½+ï¿½ï¿½ï¿½Ü£ï¿½key3ï¿½ï¿½
 //		inputData = DESedeCoder.encrypt(inputData, key1);
 //		inputData = DESedeCoder.decrypt(inputData, key2);
 //		inputData = DESedeCoder.encrypt(inputData, key3);

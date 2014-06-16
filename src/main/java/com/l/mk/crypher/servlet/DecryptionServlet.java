@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.l.mk.crypher.cryption.DESedeEncryptionUtil;
 import com.l.mk.crypher.format.ByteUtil;
+import com.l.mk.crypher.format.MessageDataTransfer;
+import com.l.mk.crypher.obj.Message;
+import com.l.mk.crypher.obj.MessageHeader;
 
 /**
  * Servlet implementation class DecryptionServlet
@@ -39,21 +42,39 @@ public class DecryptionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//数据对象map
 		Map<String,String> map = new HashMap<String,String>();
-		//获取密文
-		String cipher = request.getParameter("cipher");
-		byte[] cipher_data = ByteUtil.compress(cipher);
-		//明文数据
-		byte[] data = null;
+		
+		//解析密文头
+		String cipherString = request.getParameter("cipher");
+		byte[] cipher       = ByteUtil.compress(cipherString);
+		byte[] header_cipher = new byte[40];
+		System.arraycopy(cipher, 0, header_cipher, 0, 40);
+		byte[] key = null, header = null;
 		try {
-			//密钥
-			byte[] key = DESedeEncryptionUtil.initKey("hello", "1322", "sdfs"); 
-			data = DESedeEncryptionUtil.decrypt(cipher_data, key);
+			key = DESedeEncryptionUtil.initKey("12345678", "abcdefgh", "!@#$%^&*");
+			header = DESedeEncryptionUtil.decrypt(header_cipher, key);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		map.put("xm",new String(data,"UTF-8") );
-		request.setAttribute("plaintext", map);
+		MessageHeader messageHeader = MessageHeader.getMessageHeader(header);
+		Map<String, String> map2 = MessageDataTransfer.messageHeaderToMap(messageHeader);
+		
+		//解析密文
+		byte[] content_cipher = null, content =null;
+		System.arraycopy(cipher, 16, content_cipher, 0, cipher.length - 16);
+		
+		try {
+			key = DESedeEncryptionUtil.initKey(map2.get("ZZJ"), map.get("SPH"), map.get("KPRQ"));
+			content = DESedeEncryptionUtil.decrypt(content_cipher, key);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Message message = Message.getMessage(content);
+		Map<String, String> map3 = MessageDataTransfer.messageToMap(message);
+		
+		
+		request.setAttribute("plaintext", map3);
 		this.getServletConfig()
 			.getServletContext()
 			.getRequestDispatcher("/showInfo.jsp")

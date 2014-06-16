@@ -25,8 +25,17 @@ public class MessageHeader {
 	 * 
 	 * @return
 	 */
-	public MessageHeader getMessageHeader(byte[] b) {
+	public static MessageHeader getMessageHeader(byte[] b) {
 		return null;
+	}
+	
+	public byte[] toBytes() {
+		byte[] b = new byte[16];
+		b[0] = length;
+		System.arraycopy(kprq, 0, b, 1, kprq.length);
+		System.arraycopy(sph, 0, b, 5, sph.length);
+		System.arraycopy(zzj, 0, b, 12, zzj.length);
+		return b;
 	}
 
 	public byte getLength() {

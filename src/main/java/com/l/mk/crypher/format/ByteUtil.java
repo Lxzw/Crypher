@@ -6,10 +6,10 @@ import java.util.Map;
 public class ByteUtil {
 	
 	/**
-	 * �������ֽ�������кϲ�
-	 * @param head �ϲ�֮��,����ʾ�Ĳ���
-	 * @param end  �ϲ�֮��, ����ƴ�ӵĲ���
-	 * @return byte[]  ����һ���ֽ��������
+	 * 将两个字节数组合并成一个字节数组
+	 * @param head
+	 * @param end
+	 * @return
 	 */
 	public static byte[] merge(byte[] head, byte[] end) {
 		byte[] t = new byte[head.length+end.length];
@@ -17,6 +17,7 @@ public class ByteUtil {
 		System.arraycopy(end, 0, t, head.length, end.length);
 		return t;
 	}
+	
 	
 	/**
 	 * ��ciper��һ���ֽ���չ�������ַ�<br>

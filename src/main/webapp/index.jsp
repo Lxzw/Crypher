@@ -19,8 +19,7 @@
 	<p>	税款合计：<input type="text" name="skhj" value="2100.00" />     </p>
 	<p>	缴费月份：<input type="text" name="jfyf" value="10,11,12" />     </p>
 	<p>	自助机编号：<input type="text" name="zzj" value="12345678" />     </p>
-	<p> xml文件： <textarea rows="9" cols="80" name="xml" >
-	       <?xml version="1.0" encoding="utf-8"?>
+	<p> xml文件： <textarea rows="9" cols="80" name="xml" ><?xml version="1.0" encoding="utf-8"?>
 			<ROOT>
 			<XM>周星星</XM>
 			<ZJH>330283198910102323</ZJH>

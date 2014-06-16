@@ -28,7 +28,7 @@ public class MessageDataTransfer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		messageHeader.setLength((byte)(41+len+map.get("ZJH").length()/2 + 1));
+		messageHeader.setLength((byte)(40+len+map.get("ZJH").length()/2 + 1));
 		messageHeader.setKprq(BCDConverter.toBCD(map.get("KPRQ")));
 		messageHeader.setSph(BCDConverter.toBCD(map.get("SPH")));
 		messageHeader.setZzj(BCDConverter.toBCD(map.get("ZZJ")));
@@ -57,6 +57,7 @@ public class MessageDataTransfer {
 			temp[0] = len;
 			System.arraycopy(name, 0, temp, 1, name.length);
 			message.setName(temp);
+			message.setLength(len);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,9 +69,10 @@ public class MessageDataTransfer {
 		byte lens = 0x00;
 		if (len == 18 ) {
 			lens = 0x01;
-			if (zjh.substring(len-1, len).toUpperCase().equals("X")) 
+			if (zjh.substring(len-1, len).toUpperCase().equals("X")) {
 				lens = 0x02;
 				zjh = zjh.substring(0,zjh.length()-2);
+			}
 		} else {
 			if (len > 30) {
 				lens = 0x1e;
@@ -81,7 +83,7 @@ public class MessageDataTransfer {
 		}
 		byte[] zjh_temp = new byte[16];
 		zjh_temp[0] = lens;
-		System.arraycopy(BCDConverter.toBCD(zjh), 0, zjh_temp, 0,BCDConverter.toBCD(zjh).length);
+		System.arraycopy(BCDConverter.toBCD(zjh), 0, zjh_temp, 1,BCDConverter.toBCD(zjh).length);
 		message.setZjh(zjh_temp);
 		
 		//缴费月份处理 
@@ -90,8 +92,9 @@ public class MessageDataTransfer {
 		byte[] temp = {0x01,0x02,0x04,0x08,0x10,0x20};//表示1-6月
 		byte left = 0x00, right = 0x00;
 		for (String s : months) {
-			if (Integer.parseInt(s) > 6)
-				right =(byte)(right + temp[Integer.parseInt(s) - 7]);
+			if (Integer.parseInt(s) > 6){
+				right = (byte)(right + (temp[Integer.parseInt(s)-7]));
+			}
 			else {
 				left = (byte)(left + temp[Integer.parseInt(s)-1]);
 			}
@@ -125,7 +128,7 @@ public class MessageDataTransfer {
 		
 		String src = ByteUtil.extend(jym_b);
 		byte[] temp_Jym = new  byte[8];
-		System.arraycopy(jym_b, jym_b.length-9, temp, 0, 8);
+		System.arraycopy(jym_b, jym_b.length-9, temp_Jym, 0, 8);
 		message.setJym(temp_Jym);
 		
 		return message;

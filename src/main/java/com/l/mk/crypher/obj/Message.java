@@ -1,5 +1,7 @@
 package com.l.mk.crypher.obj;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 public class Message {
 	
 	private byte[] sph = new byte[10];//税票号
@@ -28,9 +30,32 @@ public class Message {
 	 *  获得报文字节数组
 	 *  
 	 *  1.确认报文是8的倍数(填充方式)
+	 *  2.byte数组的格式：|姓名|证件号|起始年月|终止年月|税票号|开票日期|税款合计|缴费月份|
 	 */
 	public byte[] toBytes() {
-		byte[] b = new byte[8];
+		byte[] temp_name = new byte[this.getLength()+1];
+		System.arraycopy(name, 0, temp_name, 0, this.length + 1);
+		byte[] temp_zjh = null;//证件号仅仅能够处理身份证号码
+		if (this.zjh[0] == 0x01 || zjh[0] == 0x02)
+			temp_zjh  = new byte[10];
+		System.arraycopy(this.getZjh(), 0, temp_zjh, 0, 10);
+		//把所有message中的数据合并
+		int len_tmp1 = temp_name.length+temp_zjh.length+qsny.length;
+		int len_tmp2 = len_tmp1 + zzny.length + sph.length + kprq.length;
+		int len = temp_name.length + temp_zjh.length + qsny.length + zzny.length 
+				+ sph.length + kprq.length + skhj.length + jfyf.length + jym.length;
+		//生成8的倍数
+		byte[] b = new byte[(len%8) == 0 ? len : (len/8 + 1) * 8 ];
+		System.arraycopy(name, 0, b, 0, temp_name.length);
+		System.arraycopy(zjh, 0, b, temp_name.length, temp_zjh.length);
+		System.arraycopy(qsny, 0, b, temp_name.length+temp_zjh.length, qsny.length);
+		System.arraycopy(zzny, 0, b, len_tmp1, zzny.length);
+		System.arraycopy(sph, 0, b, len_tmp1+zzny.length , sph.length);
+		System.arraycopy(kprq, 0, b, len_tmp1+zzny.length+sph.length, kprq.length);
+		System.arraycopy(skhj, 0, b, len_tmp2, skhj.length);
+		System.arraycopy(jfyf, 0, b, len_tmp2+skhj.length, jfyf.length);
+		System.arraycopy(jym, 0, b, len_tmp2+skhj.length + jfyf.length, jym.length);
+		
 		return b;
 	} 
 	
@@ -41,7 +66,7 @@ public class Message {
 	 * @param b
 	 * @return
 	 */
-	public Message getMessage(byte[] b) {
+	public static Message getMessage(byte[] b) {
 		return null;
 	} 
 	
