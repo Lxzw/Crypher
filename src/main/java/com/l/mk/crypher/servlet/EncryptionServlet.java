@@ -69,10 +69,13 @@ public class EncryptionServlet extends HttpServlet {
 		byte[] content_cipher = null;
 		byte[] header_cipher = null;
 		try {
-			key = DESedeEncryptionUtil.initKey(map.get("ZZJ"),
-					map.get("SPH"), map.get("KPRQ"));
+			System.out.println(map.get("SPH").substring(5, 19));
+			key = DESedeEncryptionUtil.initKey(map.get("ZZJ").getBytes(),
+					map.get("SPH").substring(5, 19).getBytes(),map.get("KPRQ").getBytes());
 			content_cipher = DESedeEncryptionUtil.encrypt(content, key);
-			key = DESedeEncryptionUtil.initKey("12345678", "abcdefgh", "!@#$%^&*");
+			key = DESedeEncryptionUtil.initKey("12345678".getBytes(), 
+					"abcdefgh".getBytes(),
+					"!@#$%^&*".getBytes());
 			header_cipher  = DESedeEncryptionUtil.encrypt(header, key);
 			cipher = ByteUtil.merge(header_cipher, content_cipher);
 			

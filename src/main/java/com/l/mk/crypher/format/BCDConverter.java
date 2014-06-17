@@ -42,7 +42,7 @@ public class BCDConverter {
 	public static String fromBCD(byte[] src) {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i < src.length; i++) {
-			byte left = (byte)(src[i] & 0xf0 >>> 4 );
+			byte left = (byte)((src[i] & 0xf0 )>> 4 );
 			byte right = (byte)(src[i] & 0x0f);
 			sb.append(left);
 			sb.append(right);

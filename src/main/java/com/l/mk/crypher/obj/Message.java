@@ -1,6 +1,9 @@
 package com.l.mk.crypher.obj;
 
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+import org.eclipse.jdt.internal.compiler.ast.ThrowStatement;
+
+import sun.security.util.Length;
+
 
 public class Message {
 	
@@ -67,7 +70,61 @@ public class Message {
 	 * @return
 	 */
 	public static Message getMessage(byte[] b) {
-		return null;
+		Message message = new Message();
+		int recent_len = 0;
+		//设置name属性
+		message.setLength(b[0]); 
+		byte[] temp_name = new byte[30];
+		System.arraycopy(b, 0, temp_name, 0, message.getLength()+1);
+		recent_len = message.getLength() + 1;
+		message.setName(temp_name);
+		//设置zjh属性
+		byte[] temp_zjh = new byte[16];
+		int zjh_len = 0;
+		if (b[message.getLength()+1] == 0x01 || 
+				b[message.getLength()+1] == 0x02) {
+			zjh_len = 10;
+			System.arraycopy(b, message.getLength() + 1, temp_zjh, 0, 10);
+		} else {
+			System.err.println("此类证件号还没有处理！请使用身份证号码。");
+		}
+		recent_len = recent_len + zjh_len;
+		message.setZjh(temp_zjh);
+		//起始年月
+		byte[] qsny = new byte[3];
+		System.arraycopy(b, recent_len, qsny, 0, 3);
+		recent_len = recent_len + 3;
+		message.setQsny(qsny);
+		//终止年月
+		byte[] zzny = new byte[3];
+		System.arraycopy(b, recent_len, zzny, 0, 3);
+		recent_len = recent_len + 3;
+		message.setZzny(zzny);
+		//税票号
+		byte[] sph = new byte[10];
+		System.arraycopy(b, recent_len, sph, 0, 10);
+		recent_len = recent_len + 10;
+		message.setSph(sph);
+		//开票日期
+		byte[] kprq = new byte[4];
+		System.arraycopy(b, recent_len, kprq, 0, 4);
+		recent_len = recent_len + 4;
+		message.setKprq(kprq);
+		//税款合计
+		byte[] skhj = new byte[6];
+		System.arraycopy(b, recent_len, skhj, 0, 6);
+		recent_len = recent_len + 6;
+		message.setSkhj(skhj);
+		//缴费月份
+		byte[] jfyf = new byte[2];
+		System.arraycopy(b, recent_len, jfyf, 0, 2);
+		recent_len = recent_len + 2;
+		message.setJfyf(jfyf);
+		//校验码
+		byte[] jym = new byte[8];
+		System.arraycopy(b, recent_len, jym, 0, 8);
+		message.setJym(jym);
+		return message;
 	} 
 	
 	public byte[] getSph() {

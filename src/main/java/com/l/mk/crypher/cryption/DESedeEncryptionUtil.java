@@ -7,6 +7,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.sun.org.apache.bcel.internal.util.ByteSequence;
+
 public class DESedeEncryptionUtil {
 
 	/**
@@ -73,15 +75,14 @@ public class DESedeEncryptionUtil {
 	 * @return byte[] 
 	 * @throws Exception
 	 */
-	public static byte[] initKey(String key1,String key2,String key3) throws Exception {
-		Key k1 = new SecretKeySpec(strTo56(key1).getBytes(),"DESede");
-		Key k2 = new SecretKeySpec(strTo56(key2).getBytes(),"DESede");
-		Key k3 = new SecretKeySpec(strTo56(key3).getBytes(),"DESede");
-		byte[] key = new byte[192];
-		System.arraycopy(k1.getEncoded(), 0, key, 0, k1.getEncoded().length);
-		System.arraycopy(k2.getEncoded(), 0, key, 64, k2.getEncoded().length);
-		System.arraycopy(k3.getEncoded(), 0, key, 128, k3.getEncoded().length);
-		return key;
+	public static byte[] initKey(byte[] key1,byte[] key2,byte[] key3) throws Exception {
+		byte[] k1 = new byte[24];
+		System.arraycopy(key1, 0, k1, 0, 8);
+		System.arraycopy(key2, 0, k1, 8, 8);
+		System.arraycopy(key3, 0, k1, 16, 8);
+		DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(k1);
+	
+		return deSedeKeySpec.getKey();
 	}
 	
 	/**

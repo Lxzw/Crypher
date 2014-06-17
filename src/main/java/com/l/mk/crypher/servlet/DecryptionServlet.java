@@ -46,11 +46,13 @@ public class DecryptionServlet extends HttpServlet {
 		//解析密文头
 		String cipherString = request.getParameter("cipher");
 		byte[] cipher       = ByteUtil.compress(cipherString);
-		byte[] header_cipher = new byte[40];
-		System.arraycopy(cipher, 0, header_cipher, 0, 40);
+		byte[] header_cipher = new byte[24];
+		System.arraycopy(cipher, 0, header_cipher, 0, 24);
 		byte[] key = null, header = null;
 		try {
-			key = DESedeEncryptionUtil.initKey("12345678", "abcdefgh", "!@#$%^&*");
+			key = DESedeEncryptionUtil.initKey("12345678".getBytes(),
+					"abcdefgh".getBytes(), 
+					"!@#$%^&*".getBytes());
 			header = DESedeEncryptionUtil.decrypt(header_cipher, key);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -60,11 +62,13 @@ public class DecryptionServlet extends HttpServlet {
 		Map<String, String> map2 = MessageDataTransfer.messageHeaderToMap(messageHeader);
 		
 		//解析密文
-		byte[] content_cipher = null, content =null;
-		System.arraycopy(cipher, 16, content_cipher, 0, cipher.length - 16);
+		byte[] content_cipher = new byte[64], content =null;
+		System.arraycopy(cipher, 24, content_cipher, 0, cipher.length - 24);
 		
 		try {
-			key = DESedeEncryptionUtil.initKey(map2.get("ZZJ"), map.get("SPH"), map.get("KPRQ"));
+			key = DESedeEncryptionUtil.initKey(map2.get("ZZJ").getBytes(), 
+					map2.get("SPH").getBytes(), 
+					map2.get("KPRQ").getBytes());
 			content = DESedeEncryptionUtil.decrypt(content_cipher, key);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

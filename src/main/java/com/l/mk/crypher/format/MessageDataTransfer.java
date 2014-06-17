@@ -3,7 +3,10 @@ package com.l.mk.crypher.format;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
+
+import sun.security.util.Length;
 
 import com.l.mk.crypher.obj.Message;
 import com.l.mk.crypher.obj.MessageHeader;
@@ -30,7 +33,8 @@ public class MessageDataTransfer {
 		}
 		messageHeader.setLength((byte)(40+len+map.get("ZJH").length()/2 + 1));
 		messageHeader.setKprq(BCDConverter.toBCD(map.get("KPRQ")));
-		messageHeader.setSph(BCDConverter.toBCD(map.get("SPH")));
+		int lens = map.get("SPH").length();
+		messageHeader.setSph(BCDConverter.toBCD(map.get("SPH").substring(lens-14,lens)));
 		messageHeader.setZzj(BCDConverter.toBCD(map.get("ZZJ")));
 		return messageHeader;
 	}
@@ -43,7 +47,9 @@ public class MessageDataTransfer {
 	public static Message getMessage(Map<String,String> map) {
 		Message message = new Message();
 		message.setSph(BCDConverter.toBCD(map.get("SPH")));
-		message.setSkhj(BCDConverter.toBCD(map.get("SKHJ")));
+		//税款合计处理
+		int skhj  = (int)(Float.parseFloat(map.get("SKHJ")) * 100);
+		message.setSkhj(BCDConverter.toBCD(skhj + ""));
 		message.setQsny(BCDConverter.toBCD(map.get("QSNY")));
 		message.setZzj(BCDConverter.toBCD(map.get("ZZJ")));
 		message.setKprq(BCDConverter.toBCD(map.get("KPRQ")));
@@ -100,8 +106,8 @@ public class MessageDataTransfer {
 			}
 		}
 		byte[] mon = new byte[2];
-		mon[0] = left;
-		mon[1] = right;
+		mon[0] = left;//1-6
+		mon[1] = right;//7-12
 		message.setJfyf(mon);
 		
 		//校验码处理MD5
@@ -135,6 +141,57 @@ public class MessageDataTransfer {
 		
 	}
 	
+	/**
+	 * 将Message对象转换 Map
+	 * @throws UnsupportedEncodingException 
+	 */
+	public static Map<String,String> messageToMap(Message message) throws UnsupportedEncodingException {
+		Map<String, String> map = new HashMap<String,String>();
+		
+		map.put("SPH", BCDConverter.fromBCD(message.getSph()));
+		map.put("SKHJ", BCDConverter.fromBCD(message.getSkhj()));
+		map.put("QSNY", BCDConverter.fromBCD(message.getQsny()));
+		map.put("ZZJ", BCDConverter.fromBCD(message.getZzj()));
+		map.put("KPRQ", BCDConverter.fromBCD(message.getKprq()));
+		map.put("ZZNY", BCDConverter.fromBCD(message.getZzny()));
+		
+		
+		//姓名处理
+		byte[] temp_name = message.getName();
+		byte[] real_name = new byte[temp_name[0]];
+		System.arraycopy(temp_name, 1, real_name, 0, real_name.length);
+		String nameString = new String(real_name,"GBK");
+		map.put("XM", nameString);
+		//证件处理 --仅仅完成了身份证认证
+		byte[] temp_zjh = message.getZjh();
+		if (temp_zjh[0] == 0x01) {
+			byte[] b = new byte[9];
+			System.arraycopy(message.getZjh(), 1, b, 0 , b.length);
+			map.put("ZJH", BCDConverter.fromBCD(b));
+		}
+		
+		//缴费月份
+		byte[] temp_jfyf = message.getJfyf();
+		byte left = temp_jfyf[0];
+		byte right = temp_jfyf[1];
+		String jfyfString  = "";
+		for (int i = 1; i <= 6; i++ ) {
+			if (((left>>i-1)&0x01) == 0x01) {
+				jfyfString = jfyfString + "" + i + ",";
+			}
+		}
+		for (int i = 7; i <= 12; i++ ) {
+			if (((right>>i-7)&0x01) == 0x01) {
+				jfyfString = jfyfString + "" + i + ",";
+			}
+		}
+		map.put("JFYF", ((jfyfString == null) ? "" : jfyfString.substring(0,jfyfString.length()-1)));
+		
+		
+		
+		return map;
+	}
+	
 	private static byte[] md5(String clear) {
 		byte[] b = null;
 		try {
@@ -154,14 +211,13 @@ public class MessageDataTransfer {
 	 * @return
 	 */
 	public static Map<String,String> messageHeaderToMap(MessageHeader header) {
-		return null;
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("SPH", BCDConverter.fromBCD(header.getSph()));
+		map.put("KPRQ", BCDConverter.fromBCD(header.getKprq()));
+		map.put("ZZJ", BCDConverter.fromBCD(header.getZzj()));
+		return map;
 	}
 	
-	/**
-	 * 将Message对象转换 Map
-	 */
-	public static Map<String,String> messageToMap(Message message) {
-		return null;
-	}
+
 	
 }

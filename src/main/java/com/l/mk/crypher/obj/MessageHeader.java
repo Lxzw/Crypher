@@ -1,5 +1,7 @@
 package com.l.mk.crypher.obj;
 
+import sun.security.util.Length;
+
 /**
  * 
  * @author L
@@ -26,7 +28,18 @@ public class MessageHeader {
 	 * @return
 	 */
 	public static MessageHeader getMessageHeader(byte[] b) {
-		return null;
+		MessageHeader messageHeader = new MessageHeader();
+		messageHeader.setLength(b[0]);
+		byte[] temp_kprq = new byte[4];
+		System.arraycopy(b, 1, temp_kprq, 0, 4);
+		messageHeader.setKprq(temp_kprq);
+		byte[] temp_sph = new byte[7];
+		System.arraycopy(b, 5, temp_sph, 0, 7);
+		messageHeader.setSph(temp_sph);
+		byte[] temp_zzj = new byte[4];
+		System.arraycopy(b, 12, temp_zzj, 0, 4);
+		messageHeader.setZzj(temp_zzj);
+		return messageHeader;
 	}
 	
 	public byte[] toBytes() {
