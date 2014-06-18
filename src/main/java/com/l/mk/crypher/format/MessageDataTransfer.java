@@ -47,9 +47,20 @@ public class MessageDataTransfer {
 	public static Message getMessage(Map<String,String> map) {
 		Message message = new Message();
 		message.setSph(BCDConverter.toBCD(map.get("SPH")));
+		
 		//税款合计处理
-		int skhj  = (int)(Float.parseFloat(map.get("SKHJ")) * 100);
-		message.setSkhj(BCDConverter.toBCD(skhj + ""));
+		float skhj_float = Float.parseFloat(map.get("SKHJ"));
+		int skhj_int =(int)(skhj_float * 100);
+		String skhjsString = skhj_int + "";
+		int skhjLen = skhjsString.length();
+		if ((skhj_int + "").length() < 12) {
+			for (int i=0; i<12-skhjLen; i++) {
+				skhjsString = "0" + skhjsString;
+			}
+		}
+		
+		message.setSkhj(BCDConverter.toBCD(skhjsString));
+		
 		message.setQsny(BCDConverter.toBCD(map.get("QSNY")));
 		message.setZzj(BCDConverter.toBCD(map.get("ZZJ")));
 		message.setKprq(BCDConverter.toBCD(map.get("KPRQ")));
@@ -132,10 +143,18 @@ public class MessageDataTransfer {
 		System.arraycopy(message.getJfyf(), 0, jym_b, Lsph + Lname + Lskhj + Lqsny + Lkprq + Lzzny + Lzjh, Ljfyf);
 		System.arraycopy(message.getZzj(), 0, jym_b, Lsph + Lname + Lskhj + Lqsny + Lkprq + Lzzny + Lzjh + Ljfyf, Lzzj);
 		
-		String src = ByteUtil.extend(jym_b);
 		byte[] temp_Jym = new  byte[8];
 		System.arraycopy(jym_b, jym_b.length-9, temp_Jym, 0, 8);
 		message.setJym(temp_Jym);
+		
+		//自助机编号
+		String zzjString = map.get("ZZJ");
+		if (zzjString.length() < 8 ) {
+			for (int i=0; i<8-map.get("ZZJ").length(); i++) {
+				zzjString = "0" + zzjString;
+			}
+		} 
+		message.setZzj(BCDConverter.toBCD(zzjString));
 		
 		return message;
 		
@@ -149,7 +168,12 @@ public class MessageDataTransfer {
 		Map<String, String> map = new HashMap<String,String>();
 		
 		map.put("SPH", BCDConverter.fromBCD(message.getSph()));
-		map.put("SKHJ", BCDConverter.fromBCD(message.getSkhj()));
+		
+		//税款合计处理
+		String skhjString = BCDConverter.fromBCD(message.getSkhj());
+		skhjString = Integer.parseInt(skhjString) / 100 + "";
+		map.put("SKHJ", skhjString);
+		
 		map.put("QSNY", BCDConverter.fromBCD(message.getQsny()));
 		map.put("ZZJ", BCDConverter.fromBCD(message.getZzj()));
 		map.put("KPRQ", BCDConverter.fromBCD(message.getKprq()));
@@ -185,10 +209,7 @@ public class MessageDataTransfer {
 				jfyfString = jfyfString + "" + i + ",";
 			}
 		}
-		map.put("JFYF", ((jfyfString == null) ? "" : jfyfString.substring(0,jfyfString.length()-1)));
-		
-		
-		
+		map.put("JFYF", jfyfString.substring(0, jfyfString.lastIndexOf(",")));
 		return map;
 	}
 	

@@ -40,8 +40,6 @@ public class DecryptionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//数据对象map
-		Map<String,String> map = new HashMap<String,String>();
 		
 		//解析密文头
 		String cipherString = request.getParameter("cipher");
@@ -62,8 +60,8 @@ public class DecryptionServlet extends HttpServlet {
 		Map<String, String> map2 = MessageDataTransfer.messageHeaderToMap(messageHeader);
 		
 		//解析密文
-		byte[] content_cipher = new byte[64], content =null;
-		System.arraycopy(cipher, 24, content_cipher, 0, cipher.length - 24);
+		byte[] content_cipher = new byte[cipher.length - header_cipher.length], content =null;
+		System.arraycopy(cipher, 24, content_cipher, 0, cipher.length - header_cipher.length);
 		
 		try {
 			key = DESedeEncryptionUtil.initKey(map2.get("ZZJ").getBytes(), 
