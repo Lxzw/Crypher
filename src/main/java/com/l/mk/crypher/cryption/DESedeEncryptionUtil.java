@@ -5,9 +5,6 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 public class DESedeEncryptionUtil {
 
@@ -85,23 +82,5 @@ public class DESedeEncryptionUtil {
 		return deSedeKeySpec.getKey();
 	}
 	
-	/**
-	 * 将不同长度的字符串变成56字节长的字符串
-	 * @param s
-	 * @return
-	 */
-	private static String strTo56(String s) {
-		StringBuilder sb = new StringBuilder(s);
-		if (s.length() < 64) {
-			for (int i=0; i<(56-s.length()); i++) {
-				sb.append(s.charAt(s.length()%(s.length()/2)));
-			}
-		}
-		if (s.length() > 64) {
-			for(int i=0; i< (s.length() - 64); i++) {
-				sb.deleteCharAt(s.length()%(s.length()/2));
-			}
-		}
-		return sb.toString();
-	}
+
 }

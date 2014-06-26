@@ -10,6 +10,7 @@ import sun.security.util.Length;
 
 import com.l.mk.crypher.obj.Message;
 import com.l.mk.crypher.obj.MessageHeader;
+import com.sun.xml.internal.bind.v2.runtime.Name;
 
 public class MessageDataTransfer {
 
@@ -77,6 +78,12 @@ public class MessageDataTransfer {
 			message.setLength(len);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
+			try {
+				System.out.println(map.get("XM").getBytes("GBK").length);
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		
@@ -88,7 +95,7 @@ public class MessageDataTransfer {
 			lens = 0x01;
 			if (zjh.substring(len-1, len).toUpperCase().equals("X")) {
 				lens = 0x02;
-				zjh = zjh.substring(0,zjh.length()-2);
+				zjh = zjh.substring(0,zjh.length()-1);
 			}
 		} else {
 			if (len > 30) {
@@ -188,10 +195,14 @@ public class MessageDataTransfer {
 		map.put("XM", nameString);
 		//证件处理 --仅仅完成了身份证认证
 		byte[] temp_zjh = message.getZjh();
-		if (temp_zjh[0] == 0x01) {
+		if (temp_zjh[0] == 0x01 || temp_zjh[0] == 0x02) {
 			byte[] b = new byte[9];
 			System.arraycopy(message.getZjh(), 1, b, 0 , b.length);
-			map.put("ZJH", BCDConverter.fromBCD(b));
+			String string  = BCDConverter.fromBCD(b);
+			if (temp_zjh[0] == 0x02) {
+				string = string.substring(1,string.length()) + "X";
+			}
+			map.put("ZJH", string);
 		}
 		
 		//缴费月份
