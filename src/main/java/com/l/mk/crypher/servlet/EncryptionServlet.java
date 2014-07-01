@@ -1,6 +1,5 @@
 package com.l.mk.crypher.servlet;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -12,13 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Request;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import com.ibm.icu.impl.ICUService.Key;
 import com.l.mk.crypher.cryption.DESedeEncryptionUtil;
 import com.l.mk.crypher.format.ByteUtil;
 import com.l.mk.crypher.format.MessageDataTransfer;
@@ -99,6 +96,7 @@ public class EncryptionServlet extends HttpServlet {
 		String xml = new String(request.getParameter("xml").getBytes("iso-8859-1"),"utf-8");
 		Document document = DocumentHelper.parseText(xml);
 		Element root = document.getRootElement();
+		@SuppressWarnings("unchecked")
 		List<Element> elements = root.elements();
 		for (Element e : elements) {
 			map.put(e.getName(), e.getText());

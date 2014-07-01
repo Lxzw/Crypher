@@ -1,16 +1,11 @@
 package com.l.mk.crypher.format;
 
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.security.util.Length;
-
 import com.l.mk.crypher.obj.Message;
 import com.l.mk.crypher.obj.MessageHeader;
-import com.sun.xml.internal.bind.v2.runtime.Name;
 
 public class MessageDataTransfer {
 
@@ -234,18 +229,18 @@ public class MessageDataTransfer {
 		return map;
 	}
 	
-	private static byte[] md5(String clear) {
-		byte[] b = null;
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			messageDigest.update(clear.getBytes());
-			b = messageDigest.digest();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return b;
-	}
+//	private static byte[] md5(String clear) {
+//		byte[] b = null;
+//		try {
+//			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+//			messageDigest.update(clear.getBytes());
+//			b = messageDigest.digest();
+//		} catch (NoSuchAlgorithmException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return b;
+//	}
 	
 	/**
 	 * 将MessageHeader对象转换为map
