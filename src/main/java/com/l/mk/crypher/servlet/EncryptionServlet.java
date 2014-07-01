@@ -22,6 +22,7 @@ import com.ibm.icu.impl.ICUService.Key;
 import com.l.mk.crypher.cryption.DESedeEncryptionUtil;
 import com.l.mk.crypher.format.ByteUtil;
 import com.l.mk.crypher.format.MessageDataTransfer;
+import com.l.mk.crypher.format.Padding;
 import com.l.mk.crypher.obj.Message;
 import com.l.mk.crypher.obj.MessageHeader;
 
@@ -56,7 +57,7 @@ public class EncryptionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		try {
-			map = xmlProcess(request);
+			map = MessageDataTransfer.formatMap(xmlProcess(request));
 		} catch (DocumentException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -69,9 +70,10 @@ public class EncryptionServlet extends HttpServlet {
 		byte[] content_cipher = null;
 		byte[] header_cipher = null;
 		try {
-			System.out.println(map.get("SPH").substring(5, 19));
+			//System.out.println(map.get("SPH").substring(5, 19));
+			String sphString = Padding.inLeft(map.get("SPH"), 20, "0");
 			key = DESedeEncryptionUtil.initKey(map.get("ZZJ").getBytes(),
-					map.get("SPH").substring(5, 19).getBytes(),map.get("KPRQ").getBytes());
+					sphString.substring(6, 20).getBytes(),map.get("KPRQ").getBytes());
 			content_cipher = DESedeEncryptionUtil.encrypt(content, key);
 			key = DESedeEncryptionUtil.initKey("12345678".getBytes(), 
 					"abcdefgh".getBytes(),
@@ -102,19 +104,6 @@ public class EncryptionServlet extends HttpServlet {
 			map.put(e.getName(), e.getText());
 		}		
 		return map;
-	}
-
-	private void uploadfile(HttpServletRequest request) {
-		String contentType = request.getContentType();
-		System.out.println(contentType);
-		System.out.println(request.getParameter("file"));
-		try {
-			DataInputStream in = new DataInputStream(request.getInputStream());
-			System.out.println(request.getContentLength());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

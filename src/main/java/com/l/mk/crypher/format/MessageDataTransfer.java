@@ -35,7 +35,15 @@ public class MessageDataTransfer {
 		messageHeader.setLength((byte)(40+len+map.get("ZJH").length()/2 + 1));
 		messageHeader.setKprq(BCDConverter.toBCD(map.get("KPRQ")));
 		int lens = map.get("SPH").length();
-		messageHeader.setSph(BCDConverter.toBCD(map.get("SPH").substring(lens-14,lens)));
+		//表示20位，不足左补零
+		if (lens < 21) {
+			int delta = 20 - lens;
+			String sphString = map.get("SPH");
+			for (int i=0; i<delta; i++) {
+				sphString = "0" + sphString; 
+			}
+			messageHeader.setSph(BCDConverter.toBCD(sphString.substring(6,20)));
+		} 
 		messageHeader.setZzj(BCDConverter.toBCD(map.get("ZZJ")));
 		return messageHeader;
 	}
@@ -249,7 +257,19 @@ public class MessageDataTransfer {
 		map.put("ZZJ", BCDConverter.fromBCD(header.getZzj()));
 		return map;
 	}
-	
-
+	/**
+	 * @功能 对数据进行标准化处理
+	 *		@1 去空格
+	 *		@2 字符串长度
+	 * @param map
+	 * @return
+	 */
+	public static Map<String, String> formatMap(Map<String, String> map) {
+		map.put("SPH", Padding.inLeft(map.get("SPH"), 20, "0"));
+		map.put("SKHJ", Padding.inLeft(map.get("SKHJ"), 12, "0"));
+		map.put("JFYF",map.get("JFYF").replaceAll(" ", ""));
+		System.err.println(map.get("JFYF"));
+		return map;
+	}
 	
 }

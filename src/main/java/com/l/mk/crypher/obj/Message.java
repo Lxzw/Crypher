@@ -1,5 +1,7 @@
 package com.l.mk.crypher.obj;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 
 public class Message {
 	
@@ -46,10 +48,10 @@ public class Message {
 				+ sph.length + kprq.length + this.getSkhj().length + jfyf.length + jym.length
 				+ zzj.length;
 		System.out.println(this.getSkhj().length);
+		
 		//生成8的倍数
-		
-		
 		byte[] b = new byte[(len%8) == 0 ? len : (len/8 + 1) * 8 ];
+		
 		System.arraycopy(name, 0, b, 0, temp_name.length);
 		System.arraycopy(zjh, 0, b, temp_name.length, temp_zjh.length);
 		System.arraycopy(qsny, 0, b, temp_name.length+temp_zjh.length, qsny.length);
@@ -61,6 +63,7 @@ public class Message {
 		System.arraycopy(jym, 0, b, len_tmp2+skhj.length + jfyf.length, jym.length);
 		System.arraycopy(zzj, 0, b, len_tmp2+skhj.length+jfyf.length+jym.length, zzj.length
 				);
+		
 		return b;
 	} 
 	
@@ -140,7 +143,12 @@ public class Message {
 	}
 
 	public void setSph(byte[] sph) {
-		this.sph = sph;
+		if (sph.length <= 10) {
+		 System.arraycopy(sph, 0, this.sph, (this.sph.length-sph.length), sph.length);}
+		else {
+			System.arraycopy(sph, sph.length-10, this.sph, 0, 10);
+		} 
+			
 	}
 
 	public byte getLength() {
