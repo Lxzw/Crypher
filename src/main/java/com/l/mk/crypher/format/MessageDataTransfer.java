@@ -271,6 +271,18 @@ public class MessageDataTransfer {
 		map.put("SKHJ", Padding.inLeft(map.get("SKHJ").replaceAll(" ", ""), 12, "0"));
 		map.put("JFYF",map.get("JFYF").replaceAll(" ", ""));
 		map.put("ZZJ", Padding.inLeft(map.get("ZZJ").replaceAll(" ",""), 8, "0"));
+		if (map.get("QSNY").replaceAll(" ", "").length() != 6 ) {
+			System.err.println("QSNY:数据格式有问题检查是否是\"201306\"的形式|"+map.get("QSNY"));
+			map.put("QSNY", Padding.inLeft(map.get("QSNY").replace(" ", ""), 6, "0"));
+		}
+		if (map.get("ZZNY").replaceAll(" ", "").length() != 6 ) {
+			System.err.println("ZZNY:数据格式有问题检查是否是\"201306\"的形式|"+map.get("ZZNY"));
+			map.put("ZZNY", Padding.inLeft(map.get("ZZNY").replace(" ", ""), 6, "0"));
+		}
+		if (map.get("KPRQ").replaceAll(" ", "").length() != 8 ) {
+			System.err.println("KPRQ:数据格式有问题检查是否是\"20130601\"的形式|"+map.get("KPRQ"));
+			map.put("KPRQ", Padding.inLeft(map.get("KPRQ").replace(" ", ""), 8, "0"));
+		}
 		System.err.println(map.get("JFYF"));
 	
 		return map;

@@ -1,7 +1,5 @@
 package com.l.mk.crypher.obj;
 
-import sun.security.util.Length;
-
 /**
  * 
  * @author L

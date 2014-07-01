@@ -1,7 +1,5 @@
 package com.l.mk.crypher.obj;
 
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
-
 
 public class Message {
 	
