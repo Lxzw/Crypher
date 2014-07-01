@@ -278,8 +278,10 @@ public class MessageDataTransfer {
 			System.err.println("KPRQ:数据格式有问题检查是否是\"20130601\"的形式|"+map.get("KPRQ"));
 			map.put("KPRQ", Padding.inLeft(map.get("KPRQ").replace(" ", ""), 8, "0"));
 		}
-		System.err.println(map.get("JFYF"));
-	
+		if (map.get("ZJH").replaceAll(" ", "").length() != 18) {
+			System.err.println("ZJH:不是18位身份证格式|" + map.get("ZJH"));
+			map.put("ZJH", Padding.inLeft(map.get("ZJH").replaceAll(" ", ""), 18, "0"));
+		}
 		return map;
 	}
 	
