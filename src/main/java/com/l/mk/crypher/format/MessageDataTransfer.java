@@ -186,8 +186,10 @@ public class MessageDataTransfer {
 		
 		//税款合计处理
 		String skhjString = BCDConverter.fromBCD(message.getSkhj());
-		skhjString = Integer.parseInt(skhjString) / 100 + "";
-		map.put("SKHJ", skhjString);
+		double skhjFloat = (Double.parseDouble(skhjString) / 100) ;
+		System.err.println(String.format("%.2f", skhjFloat));
+			
+		map.put("SKHJ", String.format("%.2f", skhjFloat));
 		
 		map.put("QSNY", BCDConverter.fromBCD(message.getQsny()));
 		map.put("ZZJ", BCDConverter.fromBCD(message.getZzj()));
@@ -265,8 +267,8 @@ public class MessageDataTransfer {
 	 * @return
 	 */
 	public static Map<String, String> formatMap(Map<String, String> map) {
-		map.put("SPH", Padding.inLeft(map.get("SPH"), 20, "0"));
-		map.put("SKHJ", Padding.inLeft(map.get("SKHJ"), 12, "0"));
+		map.put("SPH", Padding.inLeft(map.get("SPH").replace(" ", ""), 20, "0"));
+		map.put("SKHJ", Padding.inLeft(map.get("SKHJ").replaceAll(" ", ""), 12, "0"));
 		map.put("JFYF",map.get("JFYF").replaceAll(" ", ""));
 		map.put("ZZJ", Padding.inLeft(map.get("ZZJ").replaceAll(" ",""), 8, "0"));
 		System.err.println(map.get("JFYF"));
