@@ -86,7 +86,8 @@ public class EncryptionServlet extends HttpServlet {
 		}
 		// 输出为字符串
 		//request.setAttribute("cipher", ByteUtil.extend(cipher));
-		response.setContentType("text/plain");
+		response.setContentType("text/plain;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
 		PrintWriter outPrintWriter = response.getWriter();
 		outPrintWriter.println(ByteUtil.extend(cipher));
 

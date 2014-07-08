@@ -1,6 +1,8 @@
 package com.l.mk.crypher.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import com.l.mk.crypher.format.ByteUtil;
 import com.l.mk.crypher.format.MessageDataTransfer;
 import com.l.mk.crypher.obj.Message;
 import com.l.mk.crypher.obj.MessageHeader;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * Servlet implementation class DecryptionServlet
@@ -33,6 +36,7 @@ public class DecryptionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -74,11 +78,68 @@ public class DecryptionServlet extends HttpServlet {
 		Message message = Message.getMessage(content);
 		Map<String, String> map3 = MessageDataTransfer.messageToMap(message);
 		
+		String param = toParse(map3);
 		
-		request.setAttribute("plaintext", map3);
-		this.getServletConfig()
-			.getServletContext()
-			.getRequestDispatcher("/showInfo.jsp")
-			.forward(request, response);
+		response.setContentType("text/plain;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+		PrintWriter outPrintWriter = response.getWriter();
+		
+		outPrintWriter.println(param);
+		
+//		request.setAttribute("plaintext", map3);
+//		this.getServletConfig()
+//			.getServletContext()
+//			.getRequestDispatcher("/showInfo.jsp")
+//			.forward(request, response);
+	}
+
+	private String toParse(Map<String, String> map3)  {
+		StringBuilder sBuilder = new StringBuilder("<ROOT>");
+		if (map3.containsKey("RES")) {
+			sBuilder = sBuilder.append("<RES>")
+					.append(map3.get("RES")).append("</RES");
+		}
+		String xmString = null;
+		try {
+			xmString = new String(map3.get("XM").getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (map3.containsKey("XM")) {
+			sBuilder = sBuilder.append("<XM>")
+					.append(xmString).append("</XM>");
+		}
+		if (map3.containsKey("ZJH")) {
+			sBuilder = sBuilder.append("<ZJH>")
+					.append(map3.get("ZJH")).append("</ZJH>");
+		}
+		if (map3.containsKey("QSNY")) {
+			sBuilder = sBuilder.append("<QSNY>")
+					.append(map3.get("QSNY")).append("</QSNY>");
+		}
+		if (map3.containsKey("ZZNY")) {
+			sBuilder = sBuilder.append("<ZZNY>")
+					.append(map3.get("ZZNY")).append("</ZZNY>");
+		}
+		if (map3.containsKey("SPH")) {
+			sBuilder = sBuilder.append("<SPH>")
+					.append(map3.get("SPH")).append("</SPH>");
+		}
+		if (map3.containsKey("KPRQ")) {
+			sBuilder = sBuilder.append("<KPRQ>")
+					.append(map3.get("KPRQ")).append("</KPRQ>");
+		}
+		if (map3.containsKey("SKHJ")) {
+			sBuilder = sBuilder.append("<SKHJ>")
+					.append(map3.get("SKHJ")).append("</SKHJ>");
+		}
+		if (map3.containsKey("JFYF")) {
+			sBuilder = sBuilder.append("<JFYF>")
+					.append(map3.get("JFYF")).append("</JFYF>");
+		}
+		sBuilder.append("</ROOT>");
+		
+		return sBuilder.toString();
 	}
 }
