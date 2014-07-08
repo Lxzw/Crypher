@@ -1,6 +1,7 @@
 package com.l.mk.crypher.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,7 @@ public class EncryptionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -83,11 +85,14 @@ public class EncryptionServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		// 输出为字符串
-		request.setAttribute("cipher", ByteUtil.extend(cipher));
+		//request.setAttribute("cipher", ByteUtil.extend(cipher));
+		response.setContentType("text/plain");
+		PrintWriter outPrintWriter = new PrintWriter(response.getOutputStream());
+		outPrintWriter.println(ByteUtil.extend(cipher));
 
-		this.getServletConfig().getServletContext()
-				.getRequestDispatcher("/showCipher.jsp")
-				.forward(request, response);
+//		this.getServletConfig().getServletContext()
+//				.getRequestDispatcher("/showCipher.jsp")
+//				.forward(request, response);
 	}
 
 	private Map<String, String> xmlProcess(HttpServletRequest request) throws UnsupportedEncodingException, DocumentException {
