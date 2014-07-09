@@ -198,7 +198,7 @@ public class MessageDataTransfer {
 		byte[] temp_name = message.getName();
 		byte[] real_name = new byte[temp_name[0]];
 		System.arraycopy(temp_name, 1, real_name, 0, real_name.length);
-		String nameString =new String(new String(real_name,"utf-8").getBytes(),"GBK");
+		String nameString =new String(real_name,"GBK");
 		map.put("XM", nameString);
 		//证件处理 --仅仅完成了身份证认证
 		byte[] temp_zjh = message.getZjh();

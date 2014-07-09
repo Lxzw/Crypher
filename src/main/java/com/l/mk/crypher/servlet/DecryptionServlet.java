@@ -99,16 +99,9 @@ public class DecryptionServlet extends HttpServlet {
 			sBuilder = sBuilder.append("<RES>")
 					.append(map3.get("RES")).append("</RES");
 		}
-		String xmString = null;
-		try {
-			xmString = new String(map3.get("XM").getBytes("iso-8859-1"),"utf-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		if (map3.containsKey("XM")) {
 			sBuilder = sBuilder.append("<XM>")
-					.append(xmString).append("</XM>");
+					.append(map3.get("XM")).append("</XM>");
 		}
 		if (map3.containsKey("ZJH")) {
 			sBuilder = sBuilder.append("<ZJH>")
