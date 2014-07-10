@@ -81,7 +81,7 @@ public class DecryptionServlet extends HttpServlet {
 		String param = toParse(map3);
 		
 		response.setContentType("text/plain;charset=utf-8");
-		response.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("GBK");
 		PrintWriter outPrintWriter = response.getWriter();
 		
 		outPrintWriter.println(param);
